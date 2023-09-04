@@ -1,0 +1,23 @@
+{
+	"name": "root-rpg",
+	"type": "module",
+	"version": "0.0.1",
+	"scripts": {
+		"dev": "astro dev",
+		"start": "astro dev",
+		"build": "astro build",
+		"preview": "astro preview",
+		"astro": "astro"
+	},
+	"dependencies": {
+		"@astrojs/vue": "^2.2.1",
+		"astro": "^2.10.12",
+		"normalize.css": "^8.0.1",
+		"prettier": "^3.0.2",
+		"vue": "^3.2.30"
+	},
+	"devDependencies": {},
+	"prettier": {
+		"useTabs": true
+	}
+}

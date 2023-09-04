@@ -1,0 +1,132 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const factions = {
+    eyrie: {
+        label: "Eyrie",
+        name: "Eyrie Dynasties",
+    },
+    denizens: {
+        label: "Denizens",
+        name: "Denizens of the Woodland",
+    },
+    marquisate: {
+        label: "Marquisate",
+        name: "Marquisate d'le Monde du Cat",
+    },
+    alliance: {
+        label: "Alliance",
+        name: "Woodland Alliance",
+    },
+    riverfolk: {
+        label: "Riverfolk",
+        name: "Riverfolk Company"
+    },
+}
+
+const playerCharacters = {
+    mint: {
+        label: "Mint",
+        name: "Mint Masgod",
+        species: "mouse",
+        basePlaybook: "tinker"
+    },
+    basil: {
+        label: "Basil",
+        name: "Basil",
+        species: "rabbit",
+        basePlaybook: "thief",
+    },
+    rose: {
+        label: "Rose",
+        name: "Mint Masgod",
+        species: "owl",
+        basePlaybook: "ronin"
+    },
+}
+
+const reputationLabels = new Map([
+    [-3, "Hated"],
+    [-2, "Reviled"],
+    [-1, "Disdained"],
+    [0, "Ambivalent"],
+    [1, "Respected"],
+    [2, "Esteemed"],
+    [3, "Legendary,"]
+])
+
+const playerCharacterReputation = {
+    rose: {
+        denizens: { reputation: 1, prestige: 0, notoriety: 0 },
+        marquisate: { reputation: -1, prestige: 0, notoriety: 0 },
+        alliance: { reputation: 0, prestige: 0, notoriety: 1 },
+    },
+    mint: {
+        denizens: { reputation: 0, prestige: 3, notoriety: 0 },
+        marquisate: { reputation: -1, prestige: 0, notoriety: 0 },
+        alliance: { reputation: 0, prestige: 3, notoriety: 0 },
+    },
+    basil: {
+        denizens: { reputation: 0, prestige: 3, notoriety: 0},
+        marquisate: { reputation: -1, prestige: 0, notoriety: 0 },
+        alliance: { reputation: 0, prestige: 2, notoriety: 0 },
+        riverfolk: { reputation: 0, prestige: 0, notoriety: 1 },
+    },
+}
+
+const displayCharacters = [
+    'mint',
+    'basil',
+    'rose',
+];
+
+const displayFactions = [
+    'denizens',
+    'marquisate',
+    'alliance',
+    'riverfolk',
+    'eyrie',
+];
+
+const tableRowData = displayCharacters.map(characterKey => ({
+    character: playerCharacters[characterKey].label,
+    reputationColumns: displayFactions.map(function (factionKey) {
+        return playerCharacterReputation[characterKey][factionKey] 
+        ?? {reputation: 0, prestige: 0, notoriety: 0};
+    }),
+}))
+
+---
+
+<BaseLayout>
+    <h1>Reputation Tracker</h1>
+    <section>
+        <h2>Summary</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Character</th>
+                    <th colspan={displayFactions.length}>Faction</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                    {displayFactions.map((factionKey) => (
+                        <th>{factions[factionKey].label}</th>
+                    ))}
+                </tr>
+                {tableRowData.map(data => (
+                    <tr>
+                        <th>{data.character}</th>
+                        {data.reputationColumns.map(column => (
+                            <td>
+                                {`${reputationLabels.get(column.reputation)} (${column.notoriety}n / ${column.prestige}p)`}
+                            </td>
+                        ))}
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+    </section>
+</BaseLayout>
